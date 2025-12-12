@@ -9,9 +9,9 @@ st.markdown("""
 @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;600;700;800&display=swap');
 
 :root{
-  --bg:#0b2a24;          /* أخضر غامق */
+  --bg:#ffffff; /* أخضر غامق */
   --card:#ffffff;
-  --text:#13201c;
+  --text:#0b2a24;
   --muted:#65726e;
   --border:rgba(0,0,0,0.10);
   --absher:#0b6b55;
