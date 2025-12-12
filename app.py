@@ -160,7 +160,7 @@ st.markdown("""
 <div class="topbar">
   <h1>المنصة الوطنية للتحقق من المستندات</h1>
   <p>محاكاة توضيحية (Prototype) — لا تستخدم بيانات حكومية حقيقية</p>
-  <p>واجهة تجريبية لعرض فكرة SQR2 ضمن مسار الأمن والذكاء الاصطناعي.</p>
+  <p>واجهة تجريبية لعرض فكرة SAQR2 ضمن مسار الأمن والذكاء الاصطناعي.</p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -288,7 +288,7 @@ elif st.session_state.page == "report":
     c1, c2 = st.columns(2)
     with c1:
         if st.button("إرسال البلاغ"):
-            st.success("✅ تم إرسال البلاغ")
+            st.success("✅ تم إرسال البلاغ شكرا لتعاونك")
     with c2:
         if st.button("عودة"):
             goto("result")
