@@ -1,184 +1,102 @@
 import streamlit as st
 from datetime import datetime
 
-st.set_page_config(page_title="المنصة الوطنية للتحقق", page_icon="✅", layout="centered")
+st.set_page_config(page_title="المنصة الوطنية للتحقق", page_icon="✅", layout="wide")
 
-# ---------------- Strong RTL + Absher-like styling ----------------
+# ---------------- RTL + Absher-like UI ----------------
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;600;700;800&display=swap');
 
 :root{
-  --bg:#ffffff;
- /* أخضر غامق */
+  --bg:#f4f7f6;
   --card:#ffffff;
-  --text:#0b3a2e;
-  --muted:#65726e;
-  --border:rgba(0,0,0,0.10);
-  --absher:#0b3a2e;
-  --absherDark:#075544;
-  --shadow: 0 18px 45px rgba(0,0,0,0.22);
+  --text:#0b1f19;
+  --muted:#5b6b66;
+  --border:rgba(0,0,0,0.08);
+  --absher:#0b6b55;      /* أخضر قريب من أبشر */
+  --absher2:#0f8a6b;
+  --danger:#d64545;
+  --warn:#c67a00;
 }
 
-/* Global */
-html, body, [class*="css"], .stApp{
-  font-family:'Tajawal', sans-serif !important;
-}
-.stApp{
-  background: var(--bg);
+html, body, [class*="css"]{
+  font-family: 'Tajawal', sans-serif !important;
+  direction: rtl;
+  text-align: right;
 }
 
-/* Force RTL everywhere (Streamlit sometimes needs deep selectors) */
-*{
-  direction: rtl !important;
-  text-align: right !important;
-}
-div, p, span, label, h1, h2, h3, h4, h5, h6, input, textarea{
-  direction: rtl !important;
-  text-align: right !important;
+.stApp{ background: var(--bg); color: var(--text); }
+
+.block-container{
+  padding-top: 1.2rem;
+  padding-bottom: 2rem;
+  max-width: 1200px;
 }
 
-/* Hide Streamlit chrome */
+/* Top bar */
+.topbar{
+  background: linear-gradient(90deg, var(--absher) 0%, var(--absher2) 100%);
+  border-radius: 18px;
+  padding: 18px 18px;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.18);
+  box-shadow: 0 10px 22px rgba(0,0,0,0.08);
+  margin-bottom: 14px;
+}
+.topbar h1, .topbar p { color:#fff !important; margin:0; }
+.topbar h1{ font-size: 1.35rem; font-weight: 800; }
+.topbar p{ opacity:.92; margin-top:6px; }
+
+/* Cards */
+.card{
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.04);
+  margin-bottom: 14px;
+}
+.card h2, .card h3, .card p, .card li, .card div { color: var(--text) !important; }
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:6px 10px;
+  border-radius:999px;
+  font-size: 0.95rem;
+  background: rgba(11,107,85,0.10);
+  border: 1px solid rgba(11,107,85,0.20);
+  color: var(--text);
+  font-weight: 700;
+}
+
+.muted{ color: var(--muted) !important; }
+
+/* Buttons */
+.stButton>button{
+  background: var(--absher);
+  color: #fff;
+  border: 0;
+  border-radius: 14px;
+  padding: 10px 14px;
+  font-weight: 800;
+}
+.stButton>button:hover{ background: var(--absher2); }
+
+/* Inputs */
+.stTextInput input, .stSelectbox div[data-baseweb="select"]{
+  border-radius: 14px !important;
+}
+
+/* Hide Streamlit footer/menu */
 #MainMenu {visibility: hidden;}
 footer {visibility: hidden;}
 header {visibility: hidden;}
 
-/* Layout width */
-.block-container{
-  padding-top: 1.3rem;
-  max-width: 980px;
-}
-
-/* Top title on green background */
-.hero{
-  margin: 0 auto 18px auto;
-  width: min(920px, 100%);
-  color: #eafff7;
-}
-.hero h1{
-  margin: 0 0 6px 0;
-  font-size: 1.65rem;
-  font-weight: 900;
-  color:#eafff7 !important;
-}
-.hero p{
-  margin: 0;
-  color: rgba(234,255,247,0.88) !important;
-  font-weight: 650;
-}
-
-/* White card */
-.card{
-  width: min(920px, 100%);
-  margin: 0 auto 16px auto;
-  background: var(--card);
-  border-radius: 26px;
-  border: 1px solid rgba(255,255,255,0.10);
-  box-shadow: var(--shadow);
-  overflow: hidden;
-}
-
-/* Card header strip */
-.card-head{
-  background: linear-gradient(90deg, var(--absherDark), var(--absher));
-  padding: 20px 22px;
-}
-.card-head h2{
-  margin: 0;
-  color:#fff !important;
-  font-size: 1.35rem;
-  font-weight: 900;
-}
-
-/* Card body */
-.card-body{
-  padding: 20px 22px 18px 22px;
-}
-
-/* Inputs row with icon */
-.field{
-  margin-top: 12px;
-}
-.field .label{
-  font-weight: 900;
-  color: var(--text) !important;
-  margin-bottom: 6px;
-}
-
-/* Make Streamlit inputs look like Absher */
-.stTextInput input{
-  border-radius: 14px !important;
-  padding: 12px 12px !important;
-  border: 1px solid rgba(0,0,0,0.14) !important;
-  background: #fff !important;
-}
-
-/* Buttons */
-.stButton>button{
-  background: var(--absher) !important;
-  color: #fff !important;
-  border: 0 !important;
-  border-radius: 14px !important;
-  padding: 14px 16px !important;
-  font-weight: 900 !important;
-  font-size: 1.05rem !important;
-  width: 100% !important;
-}
-.stButton>button:hover{
-  background: var(--absherDark) !important;
-}
-
-/* Logout as text-like button */
-.logout .stButton>button{
-  width: auto !important;
-  padding: 10px 14px !important;
-  border-radius: 12px !important;
-  font-weight: 900 !important;
-}
-
-/* Service chips */
-.chips{
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-}
-.chip{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  padding: 9px 12px;
-  border-radius: 999px;
-  border: 1px solid rgba(11,107,85,0.22);
-  background: rgba(11,107,85,0.08);
-  color: var(--text) !important;
-  font-weight: 850;
-}
-
-/* File uploader RTL fixes */
-div[data-testid="stFileUploader"]{
-  direction: rtl !important;
-  text-align: right !important;
-}
-div[data-testid="stFileUploader"] section{
-  direction: rtl !important;
-  text-align: right !important;
-}
-div[data-testid="stFileUploader"] *{
-  direction: rtl !important;
-  text-align: right !important;
-}
-
-/* Selectbox RTL fixes */
-div[data-baseweb="select"] *{
-  direction: rtl !important;
-  text-align: right !important;
-}
-
-/* Alerts RTL */
-div[role="alert"]{
-  direction: rtl !important;
-  text-align: right !important;
-}
+/* Align labels RTL nicer */
+label { font-weight: 700 !important; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -224,9 +142,9 @@ def fake_verify(doc_type: str, filename: str):
         "notes": "نتيجة أولية قابلة للتحسين عند توسيع النماذج المرجعية."
     }
 
-# ---------------- Hero (green background) ----------------
+# ---------------- Header (ONLY place we mention prototype) ----------------
 st.markdown("""
-<div class="hero">
+<div class="topbar">
   <h1>المنصة الوطنية للتحقق من المستندات</h1>
   <p>محاكاة توضيحية (Prototype) — لا تستخدم بيانات حكومية حقيقية</p>
   <p>واجهة تجريبية لعرض فكرة SQR2 ضمن مسار الأمن والذكاء الاصطناعي.</p>
@@ -235,30 +153,33 @@ st.markdown("""
 
 # ---------------- Pages ----------------
 if st.session_state.page == "login":
-    st.markdown('<div class="card">', unsafe_allow_html=True)
-    st.markdown('<div class="card-head"><h2>تسجيل الدخول</h2></div>', unsafe_allow_html=True)
-    st.markdown('<div class="card-body">', unsafe_allow_html=True)
+    colL, colR = st.columns([1, 1.2])
 
-    st.markdown('<div class="field"><div class="label">👤 اسم المستخدم أو رقم الهوية</div></div>', unsafe_allow_html=True)
-    user = st.text_input("", placeholder="اسم المستخدم أو رقم الهوية", label_visibility="collapsed")
+    with colR:
+        st.markdown('<div class="card">', unsafe_allow_html=True)
+        st.markdown("### تسجيل الدخول")
+        user = st.text_input("اسم المستخدم / رقم الهوية", placeholder="أدخل رقم الهوية أو اسم المستخدم")
+        pin = st.text_input("رمز الدخول", type="password", placeholder="••••••")
 
-    st.markdown('<div class="field"><div class="label">🔒 رمز الدخول</div></div>', unsafe_allow_html=True)
-    pin = st.text_input("", placeholder="رمز الدخول", type="password", label_visibility="collapsed")
+        c1, c2 = st.columns(2)
+        with c1:
+            if st.button("دخول"):
+                st.session_state.logged_in = True
+                goto("verify")
+        with c2:
+            st.markdown('<p class="muted" style="margin-top:10px;">نسيت رمز الدخول؟</p>', unsafe_allow_html=True)
+        st.markdown("</div>", unsafe_allow_html=True)
 
-    st.markdown('<div style="margin-top:14px;"></div>', unsafe_allow_html=True)
-    if st.button("تسجيل الدخول"):
-        st.session_state.logged_in = True
-        goto("verify")
-
-    st.markdown('<div style="margin-top:16px;"></div>', unsafe_allow_html=True)
-    st.markdown('<div class="chips">', unsafe_allow_html=True)
-    st.markdown('<div class="chip">🔒 تعزيز موثوقية المستندات</div>', unsafe_allow_html=True)
-    st.markdown('<div class="chip">⚡ تحقق فوري خلال ثوانٍ</div>', unsafe_allow_html=True)
-    st.markdown('<div class="chip">🤖 تحليل بصمة أمنية</div>', unsafe_allow_html=True)
-    st.markdown('<div class="chip">🔗 تكامل عبر واجهات آمنة</div>', unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
-
-    st.markdown('</div></div>', unsafe_allow_html=True)
+    with colL:
+        st.markdown('<div class="card">', unsafe_allow_html=True)
+        st.markdown("### عن الخدمة")
+        st.markdown("""
+- التحقق الفوري من المستندات عبر تحليل البصمات الأمنية.
+- تقليل التزوير الرقمي والورقي ورفع موثوقية الهوية.
+- ربط موحّد يدعم تكامل الجهات الحكومية عبر واجهات آمنة.
+        """)
+        st.markdown('<div class="badge">🔒 أمن عالي</div> &nbsp; <div class="badge">⚡ سرعة تحقق</div> &nbsp; <div class="badge">🤖 ذكاء اصطناعي</div>', unsafe_allow_html=True)
+        st.markdown("</div>", unsafe_allow_html=True)
 
 elif st.session_state.page == "verify":
     if not st.session_state.logged_in:
@@ -266,10 +187,18 @@ elif st.session_state.page == "verify":
         st.stop()
 
     st.markdown('<div class="card">', unsafe_allow_html=True)
-    st.markdown('<div class="card-head"><h2>رفع مستند للتحقق</h2></div>', unsafe_allow_html=True)
-    st.markdown('<div class="card-body">', unsafe_allow_html=True)
+    st.markdown("### رفع مستند للتحقق")
 
-    doc_type = st.selectbox("نوع المستند", ["صك (وزارة العدل)", "هوية وطنية", "رخصة/شهادة أخرى"])
+    cA, cB, cC = st.columns([1.1, 1.1, 0.8])
+    with cA:
+        doc_type = st.selectbox("نوع المستند", ["صك (وزارة العدل)", "هوية وطنية", "رخصة/شهادة أخرى"])
+    with cB:
+        ref_no = st.text_input("رقم مرجعي (اختياري)", placeholder="مثال: 12345")
+    with cC:
+        if st.button("تسجيل خروج"):
+            st.session_state.logged_in = False
+            st.session_state.last_result = None
+            goto("login")
 
     uploaded = st.file_uploader("ارفع صورة المستند", type=["png", "jpg", "jpeg"])
 
@@ -284,19 +213,10 @@ elif st.session_state.page == "verify":
             res["filename"] = uploaded.name
             res["time"] = datetime.now().strftime("%Y-%m-%d %H:%M")
             res["doc_type"] = doc_type
+            res["ref_no"] = ref_no
             st.session_state.last_result = res
             goto("result")
-
-    # logout under (as requested)
-    st.markdown('<div style="margin-top:14px;"></div>', unsafe_allow_html=True)
-    st.markdown('<div class="logout">', unsafe_allow_html=True)
-    if st.button("تسجيل خروج"):
-        st.session_state.logged_in = False
-        st.session_state.last_result = None
-        goto("login")
-    st.markdown('</div>', unsafe_allow_html=True)
-
-    st.markdown('</div></div>', unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
 
 elif st.session_state.page == "result":
     res = st.session_state.last_result
@@ -305,10 +225,9 @@ elif st.session_state.page == "result":
         st.stop()
 
     st.markdown('<div class="card">', unsafe_allow_html=True)
-    st.markdown('<div class="card-head"><h2>نتيجة التحقق</h2></div>', unsafe_allow_html=True)
-    st.markdown('<div class="card-body">', unsafe_allow_html=True)
+    st.markdown("### نتيجة التحقق")
 
-    st.markdown(f'<p style="color:var(--muted); font-weight:700; margin-top:0;">نوع المستند: <b>{res["doc_type"]}</b> | الملف: <b>{res["filename"]}</b> | وقت التحقق: {res["time"]}</p>', unsafe_allow_html=True)
+    st.markdown(f'<p class="muted">نوع المستند: <b>{res["doc_type"]}</b> &nbsp;|&nbsp; الملف: <b>{res["filename"]}</b> &nbsp;|&nbsp; وقت التحقق: {res["time"]}</p>', unsafe_allow_html=True)
 
     if res["status"] == "أصلي":
         st.success("✅ التحقق: المستند أصلي ورسمي")
@@ -317,6 +236,7 @@ elif st.session_state.page == "result":
     else:
         st.warning("ℹ️ التحقق: نتيجة غير مؤكدة")
 
+    st.markdown("—")
     st.markdown(f"**الجهة المُصدِرة:** {res['issuer']}")
     if res.get("copies") is not None:
         st.markdown(f"**عدد النسخ الصادرة:** {res['copies']}")
@@ -330,16 +250,16 @@ elif st.session_state.page == "result":
     st.markdown(f"**ملاحظات النظام:** {res['notes']}")
     st.markdown(f"**نسبة الثقة:** {int(res['score']*100)}%")
 
-    st.markdown('<div style="margin-top:14px;"></div>', unsafe_allow_html=True)
+    st.markdown("---")
+    st.markdown("### هل تريد الإبلاغ عن المستند؟")
     c1, c2 = st.columns(2)
     with c1:
-        if st.button("إبلاغ عن المستند"):
+        if st.button("إبلاغ"):
             goto("report")
     with c2:
         if st.button("رجوع"):
             goto("verify")
-
-    st.markdown('</div></div>', unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
 
 elif st.session_state.page == "report":
     res = st.session_state.last_result
@@ -348,9 +268,7 @@ elif st.session_state.page == "report":
         st.stop()
 
     st.markdown('<div class="card">', unsafe_allow_html=True)
-    st.markdown('<div class="card-head"><h2>نموذج الإبلاغ</h2></div>', unsafe_allow_html=True)
-    st.markdown('<div class="card-body">', unsafe_allow_html=True)
-
+    st.markdown("### نموذج الإبلاغ")
     reason = st.selectbox("سبب الإبلاغ", ["اشتباه تزوير", "اختلاف بيانات", "مستند منتحل", "أخرى"])
     details = st.text_area("ملاحظات إضافية", placeholder="اكتب التفاصيل باختصار...")
 
@@ -362,4 +280,5 @@ elif st.session_state.page == "report":
         if st.button("عودة"):
             goto("result")
 
-    st.markdown('</div></div>', unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
+
