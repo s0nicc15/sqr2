@@ -12,7 +12,7 @@ st.markdown("""
   --bg:#ffffff;
  /* أخضر غامق */
   --card:#ffffff;
-  --text:#0b2a24;
+  --text:#0b3a2e;
   --muted:#65726e;
   --border:rgba(0,0,0,0.10);
   --absher:#0b3a2e;
