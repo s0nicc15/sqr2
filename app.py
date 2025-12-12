@@ -1,102 +1,139 @@
 import streamlit as st
 from datetime import datetime
 
-st.set_page_config(page_title="المنصة الوطنية للتحقق", page_icon="✅", layout="wide")
+st.set_page_config(page_title="المنصة الوطنية للتحقق", page_icon="✅", layout="centered")
 
-# ---------------- RTL + Absher-like UI ----------------
+# ---------------- RTL + Absher-like clean login ----------------
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;600;700;800&display=swap');
 
 :root{
-  --bg:#f4f7f6;
+  --bg:#ffffff;
   --card:#ffffff;
-  --text:#0b1f19;
-  --muted:#5b6b66;
-  --border:rgba(0,0,0,0.08);
-  --absher:#0b6b55;      /* أخضر قريب من أبشر */
-  --absher2:#0f8a6b;
-  --danger:#d64545;
-  --warn:#c67a00;
+  --text:#1b1f1e;
+  --muted:#6a7772;
+  --border:rgba(0,0,0,0.10);
+  --absher:#0b6b55;
+  --absherDark:#075544;
+  --shadow: 0 18px 40px rgba(0,0,0,0.08);
 }
 
 html, body, [class*="css"]{
-  font-family: 'Tajawal', sans-serif !important;
-  direction: rtl;
-  text-align: right;
+  font-family:'Tajawal', sans-serif !important;
+  direction: rtl !important;
+  text-align: right !important;
 }
 
 .stApp{ background: var(--bg); color: var(--text); }
+.block-container{ padding-top: 1.4rem; max-width: 980px; }
 
-.block-container{
-  padding-top: 1.2rem;
-  padding-bottom: 2rem;
-  max-width: 1200px;
-}
-
-/* Top bar */
-.topbar{
-  background: linear-gradient(90deg, var(--absher) 0%, var(--absher2) 100%);
-  border-radius: 18px;
-  padding: 18px 18px;
-  color: #fff;
-  border: 1px solid rgba(255,255,255,0.18);
-  box-shadow: 0 10px 22px rgba(0,0,0,0.08);
-  margin-bottom: 14px;
-}
-.topbar h1, .topbar p { color:#fff !important; margin:0; }
-.topbar h1{ font-size: 1.35rem; font-weight: 800; }
-.topbar p{ opacity:.92; margin-top:6px; }
-
-/* Cards */
-.card{
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  padding: 16px;
-  box-shadow: 0 10px 24px rgba(0,0,0,0.04);
-  margin-bottom: 14px;
-}
-.card h2, .card h3, .card p, .card li, .card div { color: var(--text) !important; }
-
-.badge{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  padding:6px 10px;
-  border-radius:999px;
-  font-size: 0.95rem;
-  background: rgba(11,107,85,0.10);
-  border: 1px solid rgba(11,107,85,0.20);
-  color: var(--text);
-  font-weight: 700;
-}
-
-.muted{ color: var(--muted) !important; }
-
-/* Buttons */
-.stButton>button{
-  background: var(--absher);
-  color: #fff;
-  border: 0;
-  border-radius: 14px;
-  padding: 10px 14px;
-  font-weight: 800;
-}
-.stButton>button:hover{ background: var(--absher2); }
-
-/* Inputs */
-.stTextInput input, .stSelectbox div[data-baseweb="select"]{
-  border-radius: 14px !important;
-}
-
-/* Hide Streamlit footer/menu */
 #MainMenu {visibility: hidden;}
 footer {visibility: hidden;}
 header {visibility: hidden;}
 
-/* Align labels RTL nicer */
-label { font-weight: 700 !important; }
+/* Top header */
+.header{
+  border-radius: 18px;
+  padding: 18px 18px;
+  border: 1px solid var(--border);
+  background: #fff;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.05);
+  margin-bottom: 16px;
+}
+.header h1{ margin:0; font-size: 1.45rem; font-weight:800; color: var(--absher) !important; }
+.header p{ margin:6px 0 0 0; color: var(--muted) !important; font-weight:600; }
+
+/* Login card */
+.login-wrap{
+  display:flex;
+  justify-content:center;
+}
+.login-card{
+  width: min(640px, 100%);
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 26px;
+  box-shadow: var(--shadow);
+  overflow:hidden;
+}
+.login-top{
+  background: linear-gradient(90deg, var(--absherDark), var(--absher));
+  padding: 20px 22px;
+}
+.login-top h2{
+  margin:0;
+  color:#fff !important;
+  font-size: 1.35rem;
+  font-weight: 800;
+}
+.login-body{
+  padding: 20px 22px 22px 22px;
+}
+.label{
+  font-weight:800;
+  margin: 10px 0 6px 0;
+  color: var(--text) !important;
+}
+
+/* Inputs nicer */
+.stTextInput input{
+  border-radius: 14px !important;
+  padding: 12px 12px !important;
+}
+
+/* Buttons */
+.stButton>button{
+  width: 100%;
+  background: var(--absher);
+  color:#fff;
+  border:0;
+  border-radius: 14px;
+  padding: 14px 16px;
+  font-weight: 900;
+  font-size: 1.05rem;
+}
+.stButton>button:hover{ background: var(--absherDark); }
+
+/* Services card */
+.service-card{
+  width: min(860px, 100%);
+  margin: 18px auto 0 auto;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.04);
+  padding: 16px 18px;
+}
+.service-title{
+  font-weight: 900;
+  color: var(--absher) !important;
+  font-size: 1.05rem;
+  margin-bottom: 10px;
+}
+.badges{ display:flex; flex-wrap:wrap; gap:10px; }
+.badge{
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(11,107,85,0.20);
+  background: rgba(11,107,85,0.08);
+  font-weight: 800;
+  color: var(--text) !important;
+}
+
+/* File uploader align RTL */
+div[data-testid="stFileUploader"] section { direction: rtl; }
+
+/* Result cards */
+.card{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius: 18px;
+  padding: 16px 18px;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.04);
+  margin-bottom: 14px;
+}
+.muted{ color: var(--muted) !important; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -142,9 +179,9 @@ def fake_verify(doc_type: str, filename: str):
         "notes": "نتيجة أولية قابلة للتحسين عند توسيع النماذج المرجعية."
     }
 
-# ---------------- Header (ONLY place we mention prototype) ----------------
+# ---------------- Header (ONLY place to mention) ----------------
 st.markdown("""
-<div class="topbar">
+<div class="header">
   <h1>المنصة الوطنية للتحقق من المستندات</h1>
   <p>محاكاة توضيحية (Prototype) — لا تستخدم بيانات حكومية حقيقية</p>
   <p>واجهة تجريبية لعرض فكرة SQR2 ضمن مسار الأمن والذكاء الاصطناعي.</p>
@@ -153,33 +190,34 @@ st.markdown("""
 
 # ---------------- Pages ----------------
 if st.session_state.page == "login":
-    colL, colR = st.columns([1, 1.2])
+    st.markdown('<div class="login-wrap"><div class="login-card">', unsafe_allow_html=True)
+    st.markdown('<div class="login-top"><h2>تسجيل الدخول</h2></div>', unsafe_allow_html=True)
+    st.markdown('<div class="login-body">', unsafe_allow_html=True)
 
-    with colR:
-        st.markdown('<div class="card">', unsafe_allow_html=True)
-        st.markdown("### تسجيل الدخول")
-        user = st.text_input("اسم المستخدم / رقم الهوية", placeholder="أدخل رقم الهوية أو اسم المستخدم")
-        pin = st.text_input("رمز الدخول", type="password", placeholder="••••••")
+    st.markdown('<div class="label">اسم المستخدم أو رقم الهوية</div>', unsafe_allow_html=True)
+    user = st.text_input("", placeholder="اسم المستخدم أو رقم الهوية", label_visibility="collapsed")
 
-        c1, c2 = st.columns(2)
-        with c1:
-            if st.button("دخول"):
-                st.session_state.logged_in = True
-                goto("verify")
-        with c2:
-            st.markdown('<p class="muted" style="margin-top:10px;">نسيت رمز الدخول؟</p>', unsafe_allow_html=True)
-        st.markdown("</div>", unsafe_allow_html=True)
+    st.markdown('<div class="label">رمز الدخول</div>', unsafe_allow_html=True)
+    pin = st.text_input("", placeholder="رمز الدخول", type="password", label_visibility="collapsed")
 
-    with colL:
-        st.markdown('<div class="card">', unsafe_allow_html=True)
-        st.markdown("### عن الخدمة")
-        st.markdown("""
-- التحقق الفوري من المستندات عبر تحليل البصمات الأمنية.
-- تقليل التزوير الرقمي والورقي ورفع موثوقية الهوية.
-- ربط موحّد يدعم تكامل الجهات الحكومية عبر واجهات آمنة.
-        """)
-        st.markdown('<div class="badge">🔒 أمن عالي</div> &nbsp; <div class="badge">⚡ سرعة تحقق</div> &nbsp; <div class="badge">🤖 ذكاء اصطناعي</div>', unsafe_allow_html=True)
-        st.markdown("</div>", unsafe_allow_html=True)
+    if st.button("تسجيل الدخول"):
+        st.session_state.logged_in = True
+        goto("verify")
+
+    st.markdown('</div></div></div>', unsafe_allow_html=True)
+
+    # service section UNDER the login (not beside)
+    st.markdown("""
+    <div class="service-card">
+      <div class="service-title">عن الخدمة</div>
+      <div class="badges">
+        <div class="badge">🔒 تعزيز موثوقية المستندات</div>
+        <div class="badge">⚡ تحقق فوري خلال ثوانٍ</div>
+        <div class="badge">🤖 تحليل بصمة أمنية بالذكاء الاصطناعي</div>
+        <div class="badge">🔗 تكامل عبر واجهات آمنة</div>
+      </div>
+    </div>
+    """, unsafe_allow_html=True)
 
 elif st.session_state.page == "verify":
     if not st.session_state.logged_in:
@@ -189,17 +227,16 @@ elif st.session_state.page == "verify":
     st.markdown('<div class="card">', unsafe_allow_html=True)
     st.markdown("### رفع مستند للتحقق")
 
-    cA, cB, cC = st.columns([1.1, 1.1, 0.8])
-    with cA:
+    c1, c2 = st.columns([1.2, 0.8])
+    with c1:
         doc_type = st.selectbox("نوع المستند", ["صك (وزارة العدل)", "هوية وطنية", "رخصة/شهادة أخرى"])
-    with cB:
-        ref_no = st.text_input("رقم مرجعي (اختياري)", placeholder="مثال: 12345")
-    with cC:
+    with c2:
         if st.button("تسجيل خروج"):
             st.session_state.logged_in = False
             st.session_state.last_result = None
             goto("login")
 
+    # شلنا مثال الرقم المرجعي بالكامل
     uploaded = st.file_uploader("ارفع صورة المستند", type=["png", "jpg", "jpeg"])
 
     if uploaded is not None:
@@ -213,7 +250,6 @@ elif st.session_state.page == "verify":
             res["filename"] = uploaded.name
             res["time"] = datetime.now().strftime("%Y-%m-%d %H:%M")
             res["doc_type"] = doc_type
-            res["ref_no"] = ref_no
             st.session_state.last_result = res
             goto("result")
     st.markdown("</div>", unsafe_allow_html=True)
@@ -226,7 +262,6 @@ elif st.session_state.page == "result":
 
     st.markdown('<div class="card">', unsafe_allow_html=True)
     st.markdown("### نتيجة التحقق")
-
     st.markdown(f'<p class="muted">نوع المستند: <b>{res["doc_type"]}</b> &nbsp;|&nbsp; الملف: <b>{res["filename"]}</b> &nbsp;|&nbsp; وقت التحقق: {res["time"]}</p>', unsafe_allow_html=True)
 
     if res["status"] == "أصلي":
@@ -251,14 +286,14 @@ elif st.session_state.page == "result":
     st.markdown(f"**نسبة الثقة:** {int(res['score']*100)}%")
 
     st.markdown("---")
-    st.markdown("### هل تريد الإبلاغ عن المستند؟")
     c1, c2 = st.columns(2)
     with c1:
-        if st.button("إبلاغ"):
+        if st.button("إبلاغ عن المستند"):
             goto("report")
     with c2:
         if st.button("رجوع"):
             goto("verify")
+
     st.markdown("</div>", unsafe_allow_html=True)
 
 elif st.session_state.page == "report":
@@ -279,5 +314,4 @@ elif st.session_state.page == "report":
     with c2:
         if st.button("عودة"):
             goto("result")
-
     st.markdown("</div>", unsafe_allow_html=True)
