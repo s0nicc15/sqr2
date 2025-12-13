@@ -1,3 +1,6 @@
+stramlist 
+
+
 dataset/
   train/
     original/
