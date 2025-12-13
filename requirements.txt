@@ -1,1 +1,70 @@
-streamlit
+import tensorflow as tf
+from tensorflow.keras import layers, models
+
+IMG_SIZE = (224, 224)
+BATCH = 16
+
+train_ds = tf.keras.utils.image_dataset_from_directory(
+    "dataset/train",
+    image_size=IMG_SIZE,
+    batch_size=BATCH,
+    label_mode="binary"
+)
+
+val_ds = tf.keras.utils.image_dataset_from_directory(
+    "dataset/val",
+    image_size=IMG_SIZE,
+    batch_size=BATCH,
+    label_mode="binary"
+)
+
+# تحسين الأداء
+AUTOTUNE = tf.data.AUTOTUNE
+train_ds = train_ds.cache().shuffle(500).prefetch(buffer_size=AUTOTUNE)
+val_ds = val_ds.cache().prefetch(buffer_size=AUTOTUNE)
+
+# Data Augmentation (مفيد جدًا للمستندات)
+augment = tf.keras.Sequential([
+    layers.RandomRotation(0.02),
+    layers.RandomZoom(0.05),
+    layers.RandomTranslation(0.03, 0.03),
+    layers.RandomContrast(0.1),
+])
+
+# Backbone جاهز (Transfer Learning)
+base = tf.keras.applications.MobileNetV2(
+    input_shape=IMG_SIZE + (3,),
+    include_top=False,
+    weights="imagenet"
+)
+base.trainable = False  # نجمّد الشبكة أولاً
+
+inputs = layers.Input(shape=IMG_SIZE + (3,))
+x = augment(inputs)
+x = tf.keras.applications.mobilenet_v2.preprocess_input(x)
+x = base(x, training=False)
+x = layers.GlobalAveragePooling2D()(x)
+x = layers.Dropout(0.2)(x)
+outputs = layers.Dense(1, activation="sigmoid")(x)
+
+model = models.Model(inputs, outputs)
+model.compile(
+    optimizer=tf.keras.optimizers.Adam(1e-3),
+    loss="binary_crossentropy",
+    metrics=["accuracy"]
+)
+
+history = model.fit(train_ds, validation_data=val_ds, epochs=5)
+
+# Fine-tune بسيط (اختياري)
+base.trainable = True
+model.compile(
+    optimizer=tf.keras.optimizers.Adam(1e-5),
+    loss="binary_crossentropy",
+    metrics=["accuracy"]
+)
+history2 = model.fit(train_ds, validation_data=val_ds, epochs=3)
+
+model.save("sqr2_cnn_model.h5")
+print("Saved: sqr2_cnn_model.h5")
+
